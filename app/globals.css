@@ -1,0 +1,368 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-navy: var(--navy);
+  --color-navy-foreground: var(--navy-foreground);
+  --color-eco: var(--eco);
+  --color-eco-foreground: var(--eco-foreground);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+  --color-chart-7: var(--chart-7);
+  --color-chart-8: var(--chart-8);
+  --color-chart-9: var(--chart-9);
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-script: var(--font-caveat), cursive;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 16px);
+}
+
+:root {
+  color-scheme: light;
+  --radius: 1rem;
+
+  --background: oklch(0.98 0.006 247);
+  --foreground: oklch(0.23 0.03 262);
+
+  /* Soft off-white surface — clearly brighter than the tinted page background
+     but not fully white, so tiles read as raised cards without blending in. */
+  --surface: oklch(0.999 0.002 247);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.23 0.03 262);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.23 0.03 262);
+
+  --primary: oklch(0.52 0.2 264);
+  --primary-foreground: oklch(0.99 0 0);
+
+  --secondary: oklch(0.95 0.02 255);
+  --secondary-foreground: oklch(0.32 0.05 264);
+
+  --muted: oklch(0.965 0.008 255);
+  --muted-foreground: oklch(0.53 0.02 262);
+
+  --accent: oklch(0.83 0.15 83);
+  --accent-foreground: oklch(0.28 0.05 70);
+
+  --destructive: oklch(0.58 0.22 27);
+
+  --border: oklch(0.91 0.01 255);
+  --input: oklch(0.91 0.01 255);
+  --ring: oklch(0.52 0.2 264);
+
+  --navy: oklch(0.24 0.035 264);
+  --navy-foreground: oklch(0.97 0.005 255);
+  --eco: oklch(0.58 0.14 152);
+  --eco-foreground: oklch(0.99 0 0);
+  --gold: oklch(0.83 0.15 83);
+  --gold-foreground: oklch(0.28 0.05 70);
+
+  --chart-1: oklch(0.52 0.2 264);
+  --chart-2: oklch(0.83 0.15 83);
+  --chart-3: oklch(0.58 0.14 152);
+  --chart-4: oklch(0.62 0.16 20);
+  --chart-5: oklch(0.55 0.11 300);
+  --chart-6: oklch(0.66 0.14 195);
+  --chart-7: oklch(0.6 0.17 330);
+  --chart-8: oklch(0.68 0.16 52);
+  --chart-9: oklch(0.46 0.13 240);
+
+  --sidebar: oklch(0.24 0.035 264);
+  --sidebar-foreground: oklch(0.97 0.005 255);
+  --sidebar-primary: oklch(0.52 0.2 264);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.3 0.04 264);
+  --sidebar-accent-foreground: oklch(0.97 0.005 255);
+  --sidebar-border: oklch(0.32 0.04 264);
+  --sidebar-ring: oklch(0.52 0.2 264);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  /* Firefox „scroll anchoring": gdy szkielet z `loading.tsx` jest podmieniany
+     na cięższą treść (zdjęcia w Galerii / Wydarzeniach / Pomysłach), Firefox
+     stara się utrzymać zakotwiczony element w kadrze i koryguje pozycję scrolla
+     w dół — przez co podstrona ląduje kawałek niżej. Efekt jest widoczny dopiero
+     przy ponownym wejściu (Firefox zapamiętuje kotwicę), a drobny ruch scrollem
+     ją resetuje. Wyłączenie kotwiczenia całkowicie eliminuje ten skok.
+     Chrome tego nie robi agresywnie, więc problem był tylko na Firefoksie. */
+  html,
+  body {
+    overflow-anchor: none;
+  }
+}
+
+/* ---- Szybkie animacje (nastawione na płynność ~120fps) ----
+   Krótkie czasy trwania + tylko transform/opacity, aby zmiany były
+   akcelerowane sprzętowo i nie powodowały przeliczania układu. */
+
+/* Przejście routera — treść strony delikatnie się pojawia.
+ * Uwaga: świadomie NIE używamy tu `transform` ani `will-change`.
+ * Transformowany/promowany wrapper tworzy własną warstwę kompozycji,
+ * przez co Firefox błędnie liczy pozycję elementu przy poroutingowym
+ * `scrollIntoView()`/`focus()` Next.js i podstrona ląduje kawałek niżej
+ * (pod nagłówkiem). Sam fade tego nie powoduje. */
+@keyframes v0-page-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.page-transition {
+  animation: v0-page-in 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-transition {
+    animation: none;
+  }
+}
+
+/* Delikatne bicie serca dla stopki. */
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.18);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.12);
+  }
+  60% {
+    transform: scale(1);
+  }
+}
+
+.animate-heartbeat {
+  animation: heartbeat 2.2s ease-in-out infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-heartbeat {
+    animation: none;
+  }
+}
+
+/* ---- Article body typography ----
+   Compact and readable on mobile so short posts don't sprawl across many
+   scrolls, then scales up on larger screens. */
+.article-prose {
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+.article-prose > * + * {
+  margin-top: 0.7rem;
+}
+
+.article-prose p {
+  text-wrap: pretty;
+}
+
+.article-prose h2,
+.article-prose h3 {
+  color: var(--foreground);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.article-prose h2 {
+  font-size: 1.1rem;
+  margin-top: 1.4rem;
+}
+
+.article-prose h3 {
+  font-size: 0.975rem;
+  margin-top: 1.2rem;
+}
+
+.article-prose h2 + *,
+.article-prose h3 + * {
+  margin-top: 0.4rem;
+}
+
+.article-prose strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.article-prose a {
+  color: var(--primary);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.article-prose ul,
+.article-prose ol {
+  padding-left: 1.25rem;
+}
+
+.article-prose li {
+  margin-top: 0.35rem;
+}
+
+.article-prose ul li {
+  list-style: disc;
+}
+
+.article-prose ol li {
+  list-style: decimal;
+}
+
+.article-prose blockquote {
+  position: relative;
+  margin-top: 1.2rem;
+  border-left: 3px solid var(--primary);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: color-mix(in oklch, var(--primary) 6%, transparent);
+  padding: 0.85rem 0.95rem 0.85rem 2.6rem;
+  color: var(--foreground);
+  font-style: italic;
+}
+
+.article-prose blockquote::before {
+  content: '\201C';
+  position: absolute;
+  left: 0.75rem;
+  top: 0.35rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2.25rem;
+  line-height: 1;
+  font-style: normal;
+  color: var(--primary);
+}
+
+.article-prose blockquote p {
+  margin-top: 0;
+}
+
+.article-prose blockquote > * + * {
+  margin-top: 0.5rem;
+}
+
+.article-prose img {
+  border-radius: var(--radius);
+  width: 100%;
+  height: auto;
+}
+
+.article-prose :is(h2, h3):first-child {
+  margin-top: 0;
+}
+
+@media (min-width: 768px) {
+  .article-prose {
+    font-size: 1.0625rem; /* 17px */
+    line-height: 1.75;
+  }
+  .article-prose > * + * {
+    margin-top: 1.15rem;
+  }
+  .article-prose h2 {
+    font-size: 1.6rem;
+    margin-top: 2.25rem;
+  }
+  .article-prose h3 {
+    font-size: 1.3rem;
+    margin-top: 2rem;
+  }
+}
+
+/* ── MapLibre: przycięcie kanwy WebGL do zaokrąglonych rogów ───────────────── */
+/* Firefox (i część przeglądarek mobilnych) renderuje kanwę WebGL na osobnej
+   warstwie kompozytora, która ignoruje `overflow:hidden` + `border-radius`
+   rodzica — przez co w rogach „wystają” 1-2 piksele kafla. Nadanie tego samego
+   promienia bezpośrednio wewnętrznym elementom MapLibre przycina je na własnej
+   warstwie. Promień musi odpowiadać `rounded-2xl` (1rem) z kontenera mapy. */
+.map-clip .maplibregl-map,
+.map-clip .maplibregl-canvas-container,
+.map-clip .maplibregl-canvas {
+  border-radius: 1rem;
+}
+
+/* ── MapLibre: mała, domyślnie zwinięta informacja o źródle (ⓘ) ─────────────── */
+/* Bazowo pokazujemy tylko małą ikonę ⓘ; treść rozwija się dopiero po kliknięciu. */
+.maplibregl-ctrl-attrib.maplibregl-compact {
+  min-height: 20px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 9999px;
+}
+.maplibregl-ctrl-attrib.maplibregl-compact:not(.maplibregl-compact-show) {
+  padding: 0;
+}
+/* Sama ikona ⓘ — wyraźnie mniejsza niż domyślnie (24px → 16px). */
+.maplibregl-ctrl-attrib-button {
+  width: 16px !important;
+  height: 16px !important;
+  background-size: 11px 11px !important;
+}
+/* Zwinięty stan: chowamy tekst źródła, zostaje tylko ikona. */
+.maplibregl-ctrl-attrib.maplibregl-compact:not(.maplibregl-compact-show)
+  .maplibregl-ctrl-attrib-inner {
+  display: none;
+}
+/* Po kliknięciu ⓘ pojawia się mały pasek z konkretnym źródłem. */
+.maplibregl-ctrl-attrib.maplibregl-compact-show {
+  padding: 2px 22px 2px 8px;
+  background: rgba(255, 255, 255, 0.92);
+}
+.maplibregl-ctrl-attrib.maplibregl-compact-show .maplibregl-ctrl-attrib-inner {
+  display: block;
+  font-size: 10px;
+  line-height: 16px;
+  white-space: nowrap;
+}
